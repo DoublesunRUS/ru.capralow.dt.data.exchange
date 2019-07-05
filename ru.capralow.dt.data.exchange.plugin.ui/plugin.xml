@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	
+	<extension point="com._1c.g5.wiring.serviceProvider">
+		<bundle
+			symbolicName="ru.capralow.dt.data.exchange.plugin.ui">
+		</bundle>
+	</extension>
+	
+	<extension point="org.eclipse.xtext.builder.participant">
+		<participant
+			class="ru.capralow.dt.data.exchange.plugin.internal.ui.ExecutableExtensionFactory:ru.capralow.dt.data.exchange.plugin.internal.ui.xtextbuilder.DataExchangeXtextBuilderParticipant"
+			fileExtensions="bsl">
+		</participant>
+	</extension>
+	
+	<extension point="com._1c.g5.v8.dt.bsl.externalBslValidator">
+		<externalValidator
+			class="ru.capralow.dt.data.exchange.plugin.internal.ui.ExecutableExtensionFactory:ru.capralow.dt.data.exchange.plugin.internal.ui.validator.DataExchangeValidator">
+		</externalValidator>
+	</extension>
+	
+</plugin>
