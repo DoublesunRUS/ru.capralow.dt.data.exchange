@@ -32,6 +32,7 @@
 
 	<modules>
 		<module>../target</module>
+		<module>../ru.capralow.dt.data.exchange.plugin.core</module>
 		<module>../ru.capralow.dt.data.exchange.plugin.ui</module>
 		<module>../ru.capralow.dt.data.exchange.plugin.feature</module>
 		<module>../repository</module>

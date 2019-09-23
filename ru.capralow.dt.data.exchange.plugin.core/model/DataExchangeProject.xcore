@@ -1,0 +1,80 @@
+@GenModel(loadInitialization="false", literalsInterface="true", nonNLSMarkers="true", prefix="dep", updateClasspath="false")
+@Ecore(nsPrefix="dep", nsURI="http://ru.capralow.dt.data.exchange.plugin.core.dep.model")
+package ru.capralow.dt.data.exchange.plugin.core.dep.model
+
+import com._1c.g5.v8.dt.metadata.mdclass.CommonModule
+import com._1c.g5.v8.dt.metadata.mdclass.XDTOPackage
+
+class DataExchangeProject {
+	String name = ""
+	
+	String storeVersion = ""
+	
+	contains DepExtension[] extensions
+	
+	DepProjectStatus status
+	
+	contains DepEnterpriseDataVersion[] enterpriseDataVersions
+	
+	op String[] getVersions() {
+		val result = newBasicEList()
+		for (DepEnterpriseDataVersion formatVersion : enterpriseDataVersions) {
+			result.add(formatVersion.getVersion)
+		}
+		return result;
+	}
+	
+	refers CommonModule[] settingsModules
+
+	op DepEnterpriseDataVersion[] getModuleFormatVersions(CommonModule module) {
+		val result = newBasicEList()
+		for (DepEnterpriseDataVersion formatVersion : enterpriseDataVersions) {
+			if (formatVersion.module.equals(module))
+				result.add(formatVersion)
+		}
+		return result;
+	}
+
+	op CommonModule[] getFormatModules() {
+		val result = newBasicEList()
+		for (DepEnterpriseDataVersion formatVersion : enterpriseDataVersions) {
+			if (!result.contains(formatVersion.module))
+				result.add(formatVersion.module);
+		}
+		return result;
+	}
+}
+
+class DataExchangeProjects {
+	refers DataExchangeProject[] projects
+	
+	op DataExchangeProject getProject(String name) {
+		for (DataExchangeProject project : projects) {
+			if (name.equals(project.name)) return project
+		}
+		return null;
+	}
+}
+
+class DepExtension {
+	String name = ""
+}
+
+class DepEnterpriseDataVersion {
+	String version = ""
+	String extensionName = ""
+	String moduleName = ""
+	
+	refers CommonModule module
+	refers XDTOPackage xdtoPackage
+}
+
+enum DepProjectStatus {
+	NoConfiguration as "Ожидание активации проектного контекста" = 0
+	NoSubsystem as "Нет подсистемы ОбменДанными" = 1
+	NoSSLVersion as "Не удалось определить версию БСП" = 2
+	NoCommonModule as "Нет общего модуля ОбменДаннымиПереопределяемый" = 3
+	NoMethod as "В общем модуле нет метода ПриПолученииДоступныхВерсийФормата" = 4
+	EmptyMethod as "В процедуре ПриПолученииДоступныхВерсийФормата не указаны версии формата" = 5
+	Ready as "Конфигурация готова к обмену" = 6
+}

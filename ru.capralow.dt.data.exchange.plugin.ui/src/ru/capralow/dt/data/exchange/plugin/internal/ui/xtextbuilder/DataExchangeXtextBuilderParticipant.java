@@ -7,26 +7,21 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.builder.IXtextBuilderParticipant;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.resource.IResourceDescription;
 import org.eclipse.xtext.resource.IResourceDescription.Delta;
 
+import com._1c.g5.v8.dt.bm.index.emf.IBmEmfIndexManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProject;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
-import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com.google.inject.Inject;
 
+import ru.capralow.dt.data.exchange.plugin.core.analyzer.DataExchangeAnalyzer;
 import ru.capralow.dt.data.exchange.plugin.internal.ui.DataExchangeUiPlugin;
-import ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics.DataExchangeCommonCommandsSourcesDiagnostic;
-import ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics.DataExchangeConfigurationPrefixDiagnostic;
-import ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics.DataExchangeConfigurationRecepientNameDiagnostic;
-import ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics.DataExchangeManagerModuleDiagnostic;
-import ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics.ExchangePlanDataExchangeSettingsDiagnostic;
-import ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics.ExchangePlanSourcesDiagnostic;
-import ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics.ExchangePlanTemplatesAndFormsDiagnostic;
 
 public class DataExchangeXtextBuilderParticipant implements IXtextBuilderParticipant {
 	private static EObject getDeltaObject(Delta delta) {
@@ -55,6 +50,8 @@ public class DataExchangeXtextBuilderParticipant implements IXtextBuilderPartici
 
 	@Inject
 	private IV8ProjectManager projectManager;
+	@Inject
+	private IBmEmfIndexManager bmEmfIndexManager;
 
 	@Override
 	public void build(IBuildContext context, IProgressMonitor monitor) throws CoreException {
@@ -64,7 +61,10 @@ public class DataExchangeXtextBuilderParticipant implements IXtextBuilderPartici
 		if (!(v8Project instanceof IConfigurationProject))
 			return;
 
-		Configuration configuration = ((IConfigurationProject) v8Project).getConfiguration();
+		IConfigurationProject configurationProject = (IConfigurationProject) v8Project;
+
+		URI xmiURI = DataExchangeAnalyzer.getResourceURIforPlugin(project);
+		DataExchangeAnalyzer.analyzeProjectAndSave(configurationProject, xmiURI, projectManager, bmEmfIndexManager);
 
 		List<Delta> deltas = context.getDeltas();
 		for (Delta delta : deltas) {
@@ -72,13 +72,9 @@ public class DataExchangeXtextBuilderParticipant implements IXtextBuilderPartici
 			if (deltaObject == null)
 				continue;
 
-			ExchangePlanDataExchangeSettingsDiagnostic.analyze(deltaObject, configuration);
-			ExchangePlanTemplatesAndFormsDiagnostic.analyze(deltaObject, configuration);
-			DataExchangeCommonCommandsSourcesDiagnostic.analyze(deltaObject, configuration);
-			ExchangePlanSourcesDiagnostic.analyze(deltaObject, configuration);
-			DataExchangeManagerModuleDiagnostic.analyze(deltaObject, configuration);
-			DataExchangeConfigurationPrefixDiagnostic.analyze(deltaObject, configuration);
-			DataExchangeConfigurationRecepientNameDiagnostic.analyze(deltaObject, configuration);
+			// Нужно создать класс и получить список планов обмена, которые используются в
+			// БСП
+
 		}
 	}
 

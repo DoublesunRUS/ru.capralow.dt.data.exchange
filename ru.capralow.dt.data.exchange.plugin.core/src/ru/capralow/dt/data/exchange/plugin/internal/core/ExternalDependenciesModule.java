@@ -1,4 +1,4 @@
-package ru.capralow.dt.data.exchange.plugin.internal.ui;
+package ru.capralow.dt.data.exchange.plugin.internal.core;
 
 import org.eclipse.core.runtime.Plugin;
 

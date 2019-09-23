@@ -1,33 +1,38 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: ru.capralow.dt.data.exchange.plugin.ui;singleton:=true
+Bundle-SymbolicName: ru.capralow.dt.data.exchange.plugin.core;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: ru.capralow.dt.data.exchange.plugin.internal.ui.DataExchangeUiPlugin
+Bundle-Activator: ru.capralow.dt.data.exchange.plugin.internal.core.DataExchangeCorePlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.xtext.xbase.lib,
- org.eclipse.emf.ecore.xcore.lib,
- ru.capralow.dt.data.exchange.plugin.core
+ org.eclipse.emf.ecore.xcore.lib
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Automatic-Module-Name: ru.capralow.dt.data.exchange.plugin.ui
+Automatic-Module-Name: ru.capralow.dt.data.exchange.plugin.core
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
-Export-Package: ru.capralow.dt.data.exchange.plugin.internal.ui;x-internal:=true,
- ru.capralow.dt.data.exchange.plugin.internal.ui.diagnostics;x-internal:=true,
- ru.capralow.dt.data.exchange.plugin.internal.ui.validator;x-internal:=true,
- ru.capralow.dt.data.exchange.plugin.internal.ui.xtextbuilder;x-internal:=true
+Export-Package: ru.capralow.dt.data.exchange.plugin.core.analyzer,
+ ru.capralow.dt.data.exchange.plugin.core.dep.model,
+ ru.capralow.dt.data.exchange.plugin.core.dep.model.impl;x-internal:=true,
+ ru.capralow.dt.data.exchange.plugin.core.dep.model.util;x-internal:=true,
+ ru.capralow.dt.data.exchange.plugin.core.utils,
+ ru.capralow.dt.data.exchange.plugin.internal.core;x-internal:=true
 Import-Package: com._1c.g5.modeling.xtext.scoping,
  com._1c.g5.v8.dt.bm.index.emf,
+ com._1c.g5.v8.dt.bsl.common,
  com._1c.g5.v8.dt.bsl.model,
  com._1c.g5.v8.dt.bsl.resource,
  com._1c.g5.v8.dt.bsl.validation,
  com._1c.g5.v8.dt.core.platform,
  com._1c.g5.v8.dt.mcore,
+ com._1c.g5.v8.dt.metadata.common,
+ com._1c.g5.v8.dt.metadata.dbview,
  com._1c.g5.v8.dt.metadata.mdclass,
+ com._1c.g5.v8.dt.metadata.mdtype,
  com._1c.g5.wiring,
  com._1c.g5.wiring.binder,
  com.google.inject,
@@ -37,6 +42,7 @@ Import-Package: com._1c.g5.modeling.xtext.scoping,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.emf.ecore.xmi.impl,
+ org.eclipse.xtext,
  org.eclipse.xtext.builder,
  org.eclipse.xtext.naming,
  org.eclipse.xtext.resource,

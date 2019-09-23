@@ -1,4 +1,4 @@
-package ru.capralow.dt.data.exchange.plugin.internal.ui.xtextbuilder;
+package ru.capralow.dt.data.exchange.plugin.core.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,7 +22,7 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 
-import ru.capralow.dt.data.exchange.plugin.internal.ui.DataExchangeUiPlugin;
+import ru.capralow.dt.data.exchange.plugin.internal.core.DataExchangeCorePlugin;
 
 public class DataExchangeUtils {
 
@@ -91,7 +91,7 @@ public class DataExchangeUtils {
 		} catch (FileNotFoundException e) {
 			String msg = MessageFormat.format("Не найден файл по следующему платформенному пути: \"{0}\"",
 					projectFileName);
-			DataExchangeUiPlugin.log(DataExchangeUiPlugin.createErrorStatus(msg, e));
+			DataExchangeCorePlugin.log(DataExchangeCorePlugin.createErrorStatus(msg, e));
 
 		}
 
@@ -163,7 +163,7 @@ public class DataExchangeUtils {
 		if (!projectExists)
 			throw new FileNotFoundException("Не найден проект с именем: " + segments[1]);
 
-		IPath resourcePath = DataExchangeUiPlugin.getDefault().getStateLocation();
+		IPath resourcePath = DataExchangeCorePlugin.getDefault().getStateLocation();
 		for (Integer i = 1; i < segments.length - 1; ++i) {
 			resourcePath = resourcePath.append(segments[i]);
 			File file = resourcePath.toFile();
@@ -173,7 +173,7 @@ public class DataExchangeUtils {
 
 				} catch (IOException e) {
 					String msg = MessageFormat.format("Не получилось удалить файл: \"{0}\"", file.toPath());
-					DataExchangeUiPlugin.log(DataExchangeUiPlugin.createErrorStatus(msg, e));
+					DataExchangeCorePlugin.log(DataExchangeCorePlugin.createErrorStatus(msg, e));
 
 				}
 			} else if (!file.exists()) {
